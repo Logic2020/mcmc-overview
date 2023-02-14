@@ -15,6 +15,9 @@ MCMCs "wander around" a lumpy surface (e.g. a probability density function), spe
 ## High Level Steps:
 1. Graph your data and formulate the general equation that fits the shape of the data (! finding the right equation is important to using it later to make accurate predictions). You will not know the specific parameters of the equation - you'll use MCMC to discover these.
 
+![This is an image of a scatter plot with a linear trend](linear_ex.PNG)
+![This is an image of a distribution plot with a bimodal bell curve shape](multimodal_ex.PNG)
+
 2. 
 
 
