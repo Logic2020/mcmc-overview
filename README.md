@@ -9,8 +9,8 @@ MCMCs "wander around" a lumpy surface (e.g. a probability density function), spe
 ![This is an image of a person "wandering around" a lumpy surface (e.g. a probability density function)](mcmc_graphic.jpg)
 
 ## Use Cases:
-- Estimate the parameters of a probability distribution or equation (e.g. estimating mu and sigma of a Normal distribution, or slope and intercept of a line)
-- 
+- **Parameter Estimation** of a probability distribution or equation (e.g. estimating mu and sigma of a Normal distribution, or slope and intercept of a line)
+- **Uncertainty Assessment**
 
 ## High Level Steps:
 1. Graph your data and formulate the general equation that fits the shape of the data (! finding the right equation is important to using it later to make accurate predictions). You will not know the specific parameters of the equation - you'll use MCMC to discover these.
