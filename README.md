@@ -26,9 +26,9 @@ This specific sampling algorithm is appropriate for symmetric and non-symmetric 
 
 1. Choose Proposal Distribution (in order to move around parameter space & calculate the transition probabilities of moving from one point in parameter space to another)
 2. (Optional) Specify prior ranges for the parameters
-3. Choose random state to begin with
-4. Choose the next candidate state
-5. Calculate the Acceptance Probability (called Hastings Ratio for the metropolis hastings mcmc) to determine if you should accept or reject the next candidate state. If A.P. > 1 then go to next state. If not, then stay in current state
+3. Choose parameter values to begin with (inital state) -> you can randomly generate a value for each parameter using a uniform continuous distribution
+4. Generate next proposed parameter values (next state) by randomly sampling a value for each parameter from the Proposal Distribution you defined in Step 1
+5. Calculate the a) Acceptance Probability (also called Hastings Ratio) and b) a randomly generated number from Uniform(0,1) in order to determine if you should accept or reject the next proposed parameter values. If u < min(1, A.P.) then proceed with proposed parameters (also called allowing a "jump" or "advancing the chain"). If not, then stay on the current state parameters
 6. Repeat many times
 7. Find target posterior distribution, which is proportional to the MCMC samples
 
@@ -37,7 +37,8 @@ This specific sampling algorithm is appropriate for symmetric and non-symmetric 
 - https://jellis18.github.io/post/2018-01-02-mcmc-part1/ (python)
 - https://youtu.be/XRfmdP5Gavs
 - https://youtu.be/yCv2N7wGDCw
-- https://bayesball.github.io/BOOK/simulation-by-markov-chain-monte-carlo.html (R)
 - https://towardsdatascience.com/mcmc-intuition-for-everyone-5ae79fff22b1 (python)
+- https://prappleizer.github.io/Tutorials/MetropolisHastings/MetropolisHastings_Tutorial.html (python)
 - https://prappleizer.github.io/Tutorials/MCMC/MCMC_Tutorial.html (python)
 - https://twiecki.io/blog/2015/11/10/mcmc-sampling/ (python)
+- https://bayesball.github.io/BOOK/simulation-by-markov-chain-monte-carlo.html (R)
