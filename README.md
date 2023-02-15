@@ -7,6 +7,8 @@ Finding the exact PDF of the unknown, desired distribution through mathematics a
 
 The MCMC algorithm iteratively adjusts the estimated distribution parameters to yield the best match between the observed data and proposed distribution/equation. The output provides a set of parameter values for the target posterior distribution, and a distribution of likely values for each parameter.
 
+Markov Chains are uniquely defined by the Markov Property - where the probability of transitioning to a new state (the transition probability) is dependent only on the current state and not the past sequence of states. As the Markov process iterates many times, it reaches a stationary state, meaning the probability of the next state will eventually converge to equals that of a prior state. The stationary state allows you to define the probability of every state at any point in time.
+
 ## Intuition Behind Algorithm:
 MCMCs "wander around" a lumpy surface (e.g. a probability density function), spending time in an area proportional to its height, and thus infers the target PDF without needing to know the exact height.
 
@@ -28,6 +30,7 @@ MCMCs "wander around" a lumpy surface (e.g. a probability density function), spe
 ## Metropolis Hastings Sampling Algorithm Steps:
 This specific sampling algorithm is appropriate for symmetric and non-symmetric distributions, is simple to implement, and can generally be applied to a variety of high dimensional complex problems. Other possible sampling algorithms include: Gibbs Sampling, ensemble sampling, parallel tempering, adaptive MCMC, Hamiltonian Monte-Carlo, and Reversible Jump MCMC. 
 
+### _Initialization_ ###
 **1. Choose Proposal Density Function (also called Proposal Distribution of Jumping Proposal)**
 The Proposal Distribution is needed in order to move around parameter space & calculate the transition probabilities of moving from one point in parameter space to another. 
 
@@ -53,25 +56,35 @@ The proposal probability density function needs to be proportional to the target
 **2. (Optional) Specify prior ranges for the parameters**
 Why allow the chain to spend time exploring areas that you know are not possible?
 
-
 **3. Choose arbitrary intial parameter values to begin with (inital state) -> you can randomly generate a value for each parameter using a uniform continuous distribution**
 
+### _Iterations_ ###
 **4. Generate next parameter values (next state) by randomly sampling a value for each parameter from the Proposal Distribution you defined in Step 1**
+A very simple way to generate a new position x* from a current position xi for a Normal(0,1) proposal distribution is to add a N(0,1) random number to xi -->
+x* = xi + (random number from N(0,1))
 
-**5. Determine if the next state shoud be accepted or rejected by first calculating the  Acceptance Probability (also called Hastings Ratio)**
+**5. Determine if the next state shoud be accepted or rejected by first calculating the Acceptance Probability (also called Hastings Ratio or Acceptance Probability)**
 The Hastings Ratio is defined as 
+![This is an image of the MCMC Hastings Ratio formula](hastings Ratio_v2.PNG)
+and similarly in more layperson's terminology
 ![This is an image of the MCMC Hastings Ratio formula](hastings Ratio.PNG)
-where p(⋅) and h(⋅) are probability densities. p(⋅) stands for the distribution you want to simulate from (target posterior distribution) but cannot, while h(⋅) stands for the distribution you can simulate from (proposal distribution) and thus did simulate your next states from.
-When the proposal distibution is a component of the targetposterior, then the Metropolis-Hastings ratio is the likelihood ratio.
+where p(⋅) and g(⋅) are probability density values. p(⋅) stands for the unknown target distribution, while g(⋅) stands for the proposal distribution.
+When the proposal distibution is symmetric (e.g. Normal distribution) the g(⋅) ratio solves to 1. 
 
 
-The probability of transitioning to the next candidate state, given the current state is a function of the ratio of the value of the posterior at the new point to the old point and the ratio of the transition probabilities at the new point to the old point.
+
+a component of the targetposterior, then the Metropolis-Hastings ratio is the likelihood ratio.
+
+- the ratio of the target posteriors ensures that the chain will gradually move to high probability regions
+- the ratio of the proposal probabilities ensures that the chain is not influenced by “favored” locations in the proposal distribution function
+- 
 
 **6. Then generate a randomly generated number *u* from Uniform(0,1). If u < min(1, A.P.) then proceed with proposed parameters (also called allowing a "jump" or "advancing the chain"). If not, then stay on the current state parameters**
-- if this ratio is > 1 then the jump will be accepted (i.e. the chain advances to the next state)
-- the ratio of the target posteriors ensures that the chain will gradually move to high probability regions
-- the ratio of the transition probabilities ensures that the chain is not influenced by “favored” locations in the proposal distribution function
+If _u_ <= Ratio then the jump will be accepted and the chain advances to the next state.
+If _u_ > Ratio then the jump will be rejected and the chain stays at the current state.
 
+In some cases, the density values may be very large or very small and cause a numeric overflow or an underflow. An alternative to the traditional Accept/Reject formulation is to apply logs-->
+log(_u_) <= log( p(new) ) - log( p(old) ) + log( h(old) ) - log( h(new) )
 
 **7. Posterior predictive checking: calculate log likelihood for each state**
 
@@ -91,3 +104,4 @@ The probability of transitioning to the next candidate state, given the current 
 - https://prappleizer.github.io/Tutorials/MCMC/MCMC_Tutorial.html (python)
 - https://twiecki.io/blog/2015/11/10/mcmc-sampling/ (python)
 - https://bayesball.github.io/BOOK/simulation-by-markov-chain-monte-carlo.html (R)
+- https://umbertopicchini.wordpress.com/2017/12/18/tips-for-coding-a-metropolis-hastings-sampler/ (R)
