@@ -29,14 +29,16 @@ This specific sampling algorithm is appropriate for symmetric and non-symmetric 
 3. Choose parameter values to begin with (inital state) -> you can randomly generate a value for each parameter using a uniform continuous distribution
 4. Generate next proposed parameter values (next state) by randomly sampling a value for each parameter from the Proposal Distribution you defined in Step 1
 5. Calculate the a) Acceptance Probability (also called Hastings Ratio) and b) a randomly generated number from Uniform(0,1) in order to determine if you should accept or reject the next proposed parameter values. If u < min(1, A.P.) then proceed with proposed parameters (also called allowing a "jump" or "advancing the chain"). If not, then stay on the current state parameters
-6. Repeat many times
-7. Find target posterior distribution, which is proportional to the MCMC samples
+6. Posterior predictive checking: calculate log likelihood for each state
+7. Repeat many times
+8. Find target posterior distribution, which is proportional to the MCMC samples
 
 
 ## Resources:
 - https://jellis18.github.io/post/2018-01-02-mcmc-part1/ (python)
 - https://youtu.be/XRfmdP5Gavs
 - https://youtu.be/yCv2N7wGDCw
+- http://modernstatisticalworkflow.blogspot.com/2017/05/model-checking-with-log-posterior.html
 - https://towardsdatascience.com/mcmc-intuition-for-everyone-5ae79fff22b1 (python)
 - https://prappleizer.github.io/Tutorials/MetropolisHastings/MetropolisHastings_Tutorial.html (python)
 - https://prappleizer.github.io/Tutorials/MCMC/MCMC_Tutorial.html (python)
