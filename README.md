@@ -8,7 +8,7 @@ Finding the exact PDF of the unknown, desired distribution through mathematics a
 The MCMC algorithm iteratively adjusts the estimated distribution parameters to yield the best match between the observed data and proposed distribution/equation. The output provides a set of parameter values for the target posterior distribution, and a distribution of likely values for each parameter.
 
 ## Intuition Behind Algorithm:
-MCMCs "wander around" a lumpy surface (e.g. a probability density function), spending time in an area proportional to its height, and thus infers the target PDF without needing to know the exact height. As more and more sample values are produced, the distribution of values more closely approximates the desired distribution.
+MCMCs "wander around" a lumpy surface (e.g. a probability density function), spending time in an area proportional to its height, and thus infers the target PDF without needing to know the exact height.
 
 ![This is an image of a person "wandering around" a lumpy surface (e.g. a probability density function)](mcmc_graphic.jpg)
 
