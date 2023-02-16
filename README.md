@@ -16,6 +16,7 @@ MCMCs "wander around" a lumpy surface (e.g. a probability density function), spe
 
 ## Use Cases of MCMC:
 - **Parameter Estimation** of a probability distribution or equation (e.g. estimating mu and sigma of a Normal distribution, or slope and intercept of a line)
+- **Bayesian applications** where the posterior distribution is proportional to the prior times the likelihood, but the constant of proportionality is often unknown. MCMC is particularly useful for sampling from posterior distributions to perform analytically-intractible Bayesian calculations. 
 
 ## High Level Steps, in Practice:
 1. Graph your data and formulate the general equation that fits the shape of the data (! finding the right equation is important to using it later to make accurate predictions). You will not know the specific parameters of the equation - you'll use MCMC to discover these.
@@ -23,7 +24,7 @@ MCMCs "wander around" a lumpy surface (e.g. a probability density function), spe
 ![This is an image of a scatter plot with a linear trend](linear_ex.PNG)
 ![This is an image of a distribution plot with a bimodal bell curve shape](multimodal_ex.PNG)
 
-2. 
+
 
 
 
@@ -56,7 +57,8 @@ The proposal probability density function needs to be proportional to the target
 **2. (Optional) Specify prior ranges for the parameters**
 Why allow the chain to spend time exploring areas that you know are not possible?
 
-**3. Choose arbitrary intial parameter values to begin with (inital state) -> you can randomly generate a value for each parameter using a uniform continuous distribution**
+**3. Choose arbitrary intial parameter values to begin with (inital state)
+You can randomly generate a value for each parameter using a uniform continuous distribution**
 
 ### _Iterations_ ###
 **4. Generate next parameter values (next state) by randomly sampling a value for each parameter from the Proposal Distribution you defined in Step 1**
@@ -65,12 +67,17 @@ x* = xi + (random number from N(0,1))
 
 **5. Determine if the next state shoud be accepted or rejected by first calculating the Acceptance Probability (also called Hastings Ratio or Acceptance Probability)**
 The Hastings Ratio is defined as 
-![This is an image of the MCMC Hastings Ratio formula](hastings Ratio_v2.PNG)
-and similarly in more layperson's terminology
-![This is an image of the MCMC Hastings Ratio formula](hastings Ratio.PNG)
-where p(⋅) and g(⋅) are probability density values. p(⋅) stands for the unknown target distribution, while g(⋅) stands for the proposal distribution.
-When the proposal distibution is symmetric (e.g. Normal distribution) the g(⋅) ratio solves to 1. 
 
+![This is an image of the MCMC Hastings Ratio formula](hastings_Ratio_v2.PNG)
+
+and similarly in simpler terminology
+
+![This is an image of the MCMC Hastings Ratio formula](hastings_Ratio.PNG)
+
+where p(⋅) and g(⋅) are probability density values. p(⋅) stands for the unknown target distribution, while g(⋅) stands for the proposal distribution.
+When the proposal distibution is symmetric (e.g. Normal distribution) it follows the property of g(xi|x*) = g(x*|xi), and thus the g(⋅) ratio solves to 1. Note that assymmetric distributions like the Beta distribution do not follow this property.
+
+The p(⋅) ratio is the density values for the next state and current state, obtained ???
 
 
 a component of the targetposterior, then the Metropolis-Hastings ratio is the likelihood ratio.
