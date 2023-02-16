@@ -133,19 +133,14 @@ There are plots you can use to review the sampler's performance and convergence.
 
 ***Problems with the Sampler:***
 
-Q. The histogram of samples is very poorly reproducing the posterior; or the chain trace slowly varies around the mean or has large visual gaps; or the acceptance rate is extremely high (e.g. 99%)
+1. The histogram of samples is very poorly reproducing the posterior; or the chain trace slowly varies around the mean or has large visual gaps; or the acceptance rate is extremely high (e.g. 99%)
+- You should increase your jump proposal size.
 
-A:You should increase your jump proposal size.
+2. The chain trace is very choppy; or the acceptance rate is extremely low (e.g. 0.3%)
+- The algorithm was inefficient as spent a lot of time at fixed locations in parameter space and rarely moved. You should decrease your jump proposal size.
 
-
-Q. The chain trace is very choppy; or the acceptance rate is extremely low (e.g. 0.3%)
-
-A: The algorithm was inefficient as spent a lot of time at fixed locations in parameter space and rarely moved. You should decrease your jump proposal size.
-
-
-Q. For higher parameter spaces, some of the parameters fit the posterior distribution well and others do not.
-
-A:Try different jump sizes for different parameters. Trialing different jump proposals for each parameters in high parameter spaces or complicated posterior distributions can be difficult and tedious work. Look into automating this tuning process via adaptive jump proposals.
+3. For higher parameter spaces, some of the parameters fit the posterior distribution well and others do not.
+- Try different jump sizes for different parameters. Trialing different jump proposals for each parameters in high parameter spaces or complicated posterior distributions can be difficult and tedious work. Look into automating this tuning process via adaptive jump proposals.
 
 
 ## Resources:
