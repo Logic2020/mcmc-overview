@@ -3,7 +3,7 @@
 ## Definition & Background:
 Markov Chain Monte Carlo (MCMC) is a class of algorithms for sampling from a known target posterior distribution by constructing a Markov Chain. The intent of the algorithm is to use sampling to get information from the distribution (e.g. expected value and random samples) that would usually need to be calculated by taking the integral of the density function. 
 There exist even simple density functions where the integral cannot be determined analytically, such as
-![This is an image of non-integratable function](non-integratable.PNG)
+![This is an image of non-integratable function](images/non-integratable.PNG)
 . So while evaluating this particular f(x) for any x may be trivial, obtaining a random sample of values of f(x) or computing the expected value could be extremely difficult. The MCMC approach offers a way to calculate an integral that would otherwise be impossible or difficult.
 
 Markov Chains are uniquely defined by the Markov Property - where the probability of transitioning to a new state (the transition probability) is dependent only on the current state and not the past sequence of states. As the Markov process iterates many times, it reaches a stationary state, meaning the probability of the next state will eventually converge to equal that of a prior state. The stationary state allows you to define the probability of every state at any point in time (this is the target posterior distribution).
@@ -14,7 +14,7 @@ Conceptually, we need to select from the known density function in proportion to
 ## Intuition Behind Algorithm:
 MCMC algorithms "wander around" a lumpy surface (e.g. a probability density function), spending time in an area proportional to its height, and thus infers the target distribution without needing to know the exact height.
 
-![This is an image of a person "wandering around" a lumpy surface (e.g. a probability density function)](mcmc_graphic.jpg)
+![This is an image of a person "wandering around" a lumpy surface (e.g. a probability density function)](images/mcmc_graphic.jpg)
 
 ## Use Cases of MCMC:
 - **Parameter Estimation** of a probability distribution or equation (e.g. estimating mu and sigma of a Normal distribution, or slope and intercept of a line)
@@ -27,7 +27,9 @@ This specific sampling algorithm is appropriate for symmetric and non-symmetric 
 
 ### Key Terms ###
 **Posterior Distribution** = the target posterior distribution that you want to sample from
-**Posterior Density Function** = the f(x) density function you choose that is difficult to integrate and will be used by the MCMC sampling algorithm to create the       Posterior   Distribution
+
+**Posterior Density Function** = the f(x) density function you choose that is difficult to integrate and will be used by the MCMC sampling algorithm to create the       Posterior Distribution
+
 **Proposal Distribution** = a distribution of your choosing that is used to select the step size and direction (positive or negative) of which to navigate around the     probability density space
 
 
@@ -35,11 +37,12 @@ This specific sampling algorithm is appropriate for symmetric and non-symmetric 
 **1. Choose Posterior Density Function**
 Graph your data and formulate an f(x) density function equation that fits the shape of the data (! finding the right equation is important to using it later to make accurate predictions). You will not know the specific parameters of the equation - you'll use MCMC to discover these.
 
-![This is an image of a scatter plot with a linear trend](linear_ex.PNG)
-![This is an image of a distribution plot with a bimodal bell curve shape](multimodal_ex.PNG)
+![This is an image of a scatter plot with a linear trend](images/linear_ex.PNG)
+![This is an image of a distribution plot with a bimodal bell curve shape](images/multimodal_ex.PNG)
 
 
 **2. Choose Proposal Distribution (also called Jumping Proposal)**
+
 The Proposal Distribution is needed in order to move around parameter space. This distribution is used to suggest candidate parameters for the next state, given the current state parameters:
 x* ~ g(x* | xi),
 where xi is the current state of distro parameters and x* is the next state of distro parameters
@@ -49,6 +52,7 @@ For each iteration of the algorithm, we draw proposed parameters x*.
 This is ultimately helping us determine the target posterior distribution parameters (e.g. the histogram of the MCMC samples produces the target posterior distribution)
 
 ***Ideal Proposal Distribution:***
+
 The chain will converge to the target distribution if the transition probability is:
 - irreducible: From any point in parameter space, we must be able to reach any other point in the space in a finite number of steps.
 - positive recurrent: For any point in parameter space, the expected number of steps for the chain to return to that point is finite. This means that the chain must be able to re-visit previously explored areas of parameter space.
@@ -58,24 +62,28 @@ The proposal probability density function needs to be proportional to the target
 
 
 **3. (Optional) Specify prior ranges for the parameters**
+
 You might want to do this to prevent the chain spending time exploring areas that you know are not possible.
 
 **4. Choose arbitrary intial parameter values to begin with (inital state)**
+
 You can choose the values or randomly generate a value for each parameter using a uniform continuous distribution.
 
 ### _Iterations_ ###
 **5. Generate next parameter values (next state) by randomly sampling a value for each parameter from the Proposal Distribution you defined in Step 1**
+
 A very simple way to generate a new position x* from a current position xi for a Normal(0,1) proposal distribution is to add a N(0,1) random number to xi -->
 x* = xi + (random number from N(0,1))
 
 **6. Determine if the next state shoud be accepted or rejected by first calculating the Acceptance Probability (also called Hastings Ratio or Acceptance Probability)**
+
 The Hastings Ratio is defined as 
 
-![This is an image of the MCMC Hastings Ratio formula](hastings_Ratio_v2.PNG)
+![This is an image of the MCMC Hastings Ratio formula](images/hastings_Ratio_v2.PNG)
 
 and similarly in simpler terminology
 
-![This is an image of the MCMC Hastings Ratio formula](hastings_Ratio.PNG)
+![This is an image of the MCMC Hastings Ratio formula](images/hastings_Ratio.PNG)
 
 where p(⋅) and g(⋅) are probability density values. p(⋅) stands for the posterior distribution, while g(⋅) stands for the proposal distribution.
 When the proposal distibution is symmetric (e.g. Normal distribution) it follows the property of g(xi|x*) = g(x*|xi), and thus the g(⋅) ratio solves to 1. Note that assymmetric distributions like the Beta distribution do not follow this property.
@@ -85,21 +93,63 @@ The p(⋅) ratio is the density values for the next state and current state, obt
 - the ratio of the target posteriors ensures that the chain will gradually move to high probability regions
 - the ratio of the proposal probabilities ensures that the chain is not influenced by “favored” locations in the proposal distribution function
 
+***Example Calculation:***
+
+The transition probability is equal to the Hastings ratio, or min(1, HR), which would be 1 in this case.
+
+![This is an image of an example of the Hastings Ratio](images/HR.PNG)
+
 **7. Then generate a randomly generated number *u* from Uniform(0,1). If u < min(1, A.P.) then proceed with proposed parameters (also called allowing a "jump" or "advancing the chain"). If not, then stay on the current state parameters**
+
 If _u_ <= Ratio then the jump will be accepted and the chain advances to the next state.
 If _u_ > Ratio then the jump will be rejected and the chain stays at the current state.
 
 In some cases, the density values may be very large or very small and cause a numeric overflow or an underflow. An alternative to the traditional Accept/Reject formulation is to apply logs-->
 log(_u_) <= log( p(new) ) - log( p(old) ) + log( g(old) ) - log( g(new) )
 
-**8. Posterior predictive checking: calculate log likelihood for each state**
+**8. Repeat many times**
 
-**9. Repeat many times**
+The number of iterations is equivalent to the length of the MCMC chain. How many samples are required to reach convergence and to have sufficient precision depends on the complexity of data and model, and may range from as few as 100 to several million. I've seen recommendations to begin with 2,000 - 10,000 iterations.
 
-**10. Find target posterior distribution, which is proportional to the MCMC samples**
+**9. Diagnose efficiency and convergence**
 
+There are plots you can use to review the sampler's performance and convergence. Below is an explanation of each one with a visual example of what the ideal state might look like.
+- Histogram of samples
+In an optimally performing MCMC, the histogram of samples should converge to the posterior distribution. 
+
+![This is an image of an ideal Sample Histogram plot](images/ideal_sample_hist.PNG)
+
+- Trace Plot (Sample vs Iteration)
+The trace of the chain should sample around the maximum of the posterior such that the samples are close to i.i.d (independent, identical distribution)
+
+![This is an image of an ideal Trace plot](images/ideal_trace_plot.PNG)
+
+- log-Posterior vs Iteration
+The log-posterior chain should be smoothly varying around the maximum
+
+![This is an image of an ideal log-Posterior vs Iteration plot](images/ideal_posterior_plot.PNG)
+
+- Acceptance Probability vs Iteration
+A good acceptance rate depends on the problem but typically for 1D problems it should be around 44%, and around 23% for more than 5 parameters.
+
+![This is an image of an ideal AP vs Iteration plot](images/ideal_AP_plot.PNG)
+
+***Problems with the Sampler:***
+
+Q. The histogram of samples is very poorly reproducing the posterior; or the chain trace slowly varies around the mean or has large visual gaps; or the acceptance rate is extremely high (e.g. 99%)
+
+A:You should increase your jump proposal size.
+  
+Q. The chain trace is very choppy; or the acceptance rate is extremely low (e.g. 0.3%)
+
+A: The algorithm was inefficient as spent a lot of time at fixed locations in parameter space and rarely moved. You should decrease your jump proposal size.
+  
+Q. For higher parameter spaces, some of the parameters fit the posterior distribution well and others do not.
+
+A:Try different jump sizes for different parameters. Trialing different jump proposals for each parameters in high parameter spaces or complicated posterior distributions can be difficult and tedious work. Look into automating this tuning process via adaptive jump proposals.
 
 ## Resources:
+
 - https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm#cite_ref-9
 - https://www.statsref.com/HTML/monte_carlo_markov_chains.html
 - https://jellis18.github.io/post/2018-01-02-mcmc-part1/ (python)
