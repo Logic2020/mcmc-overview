@@ -1,16 +1,17 @@
 # MCMC Overview
 
 ## Definition & Background:
-Markov Chain Monte Carlo (MCMC) is a class of algorithms for sampling from an unknown, desired probability distribution (also called target posterior distribution) by constructing a Markov Chain. The intent of the algorithm is to determine a probability density function (PDF) that allows us to draw samples from the unknown, desired distribution, by using a known PDF that is proportional to the desired distribution.
+Markov Chain Monte Carlo (MCMC) is a class of algorithms for sampling from a known target posterior distribution by constructing a Markov Chain. The intent of the algorithm is to use sampling to get information from the distribution (e.g. expected value and random samples) that would usually need to be calculated by taking the integral of the density function. 
+There exist even simple density functions where the integral cannot be determined analytically, such as
+![This is an image of non-integratable function](non-integratable.PNG)
+. So while evaluating f(x) for any x may be trivial, obtaining a random sample of values of f(x) or computing the expected value could be extremely difficult.
 
-Finding the exact PDF of the unknown, desired distribution through mathematics and integration can be difficult and relies on having a normalization factor. Since this approach can be extremely difficult in practice, MCMC allows us to derive a PDF by taking many many samples where the distribution of the sample values more closely approximates the unknown, desired distribution.
-
-The MCMC algorithm iteratively adjusts the estimated distribution parameters to yield the best match between the observed data and proposed distribution/equation. The output provides a set of parameter values for the target posterior distribution, and a distribution of likely values for each parameter.
+The MCMC algorithm iteratively adjusts the estimated distribution parameters to yield the best match between the observed data and proposed distribution/equation. Conceptually, we need to select from the density function in proportion to the density in specific regions — where the density peaks there should be more samples drawn than locations where the density function is negligible. The output provides a set of parameter values for the target posterior distribution, and a distribution of likely values for each parameter.
 
 Markov Chains are uniquely defined by the Markov Property - where the probability of transitioning to a new state (the transition probability) is dependent only on the current state and not the past sequence of states. As the Markov process iterates many times, it reaches a stationary state, meaning the probability of the next state will eventually converge to equals that of a prior state. The stationary state allows you to define the probability of every state at any point in time.
 
 ## Intuition Behind Algorithm:
-MCMCs "wander around" a lumpy surface (e.g. a probability density function), spending time in an area proportional to its height, and thus infers the target PDF without needing to know the exact height.
+MCMCs "wander around" a lumpy surface (e.g. a probability density function), spending time in an area proportional to its height, and thus infers the target distribution without needing to know the exact height.
 
 ![This is an image of a person "wandering around" a lumpy surface (e.g. a probability density function)](mcmc_graphic.jpg)
 
@@ -30,6 +31,11 @@ MCMCs "wander around" a lumpy surface (e.g. a probability density function), spe
 
 ## Metropolis Hastings Sampling Algorithm Steps:
 This specific sampling algorithm is appropriate for symmetric and non-symmetric distributions, is simple to implement, and can generally be applied to a variety of high dimensional complex problems. Other possible sampling algorithms include: Gibbs Sampling, ensemble sampling, parallel tempering, adaptive MCMC, Hamiltonian Monte-Carlo, and Reversible Jump MCMC. 
+
+### Key Terms ###
+Posterior Distribution = 
+Proposal Distribution = 
+
 
 ### _Initialization_ ###
 **1. Choose Proposal Density Function (also called Proposal Distribution of Jumping Proposal)**
@@ -57,8 +63,8 @@ The proposal probability density function needs to be proportional to the target
 **2. (Optional) Specify prior ranges for the parameters**
 Why allow the chain to spend time exploring areas that you know are not possible?
 
-**3. Choose arbitrary intial parameter values to begin with (inital state)
-You can randomly generate a value for each parameter using a uniform continuous distribution**
+**3. Choose arbitrary intial parameter values to begin with (inital state)**
+You can choose the values or randomly generate a value for each parameter using a uniform continuous distribution.
 
 ### _Iterations_ ###
 **4. Generate next parameter values (next state) by randomly sampling a value for each parameter from the Proposal Distribution you defined in Step 1**
@@ -102,6 +108,7 @@ log(_u_) <= log( p(new) ) - log( p(old) ) + log( h(old) ) - log( h(new) )
 
 ## Resources:
 - https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm#cite_ref-9
+- https://www.statsref.com/HTML/monte_carlo_markov_chains.html
 - https://jellis18.github.io/post/2018-01-02-mcmc-part1/ (python)
 - https://youtu.be/XRfmdP5Gavs
 - https://youtu.be/yCv2N7wGDCw
