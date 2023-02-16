@@ -35,6 +35,7 @@ This specific sampling algorithm is appropriate for symmetric and non-symmetric 
 
 ### _Initialization_ ###
 **1. Choose Posterior Density Function**
+
 Graph your data and formulate an f(x) density function equation that fits the shape of the data (! finding the right equation is important to using it later to make accurate predictions). You will not know the specific parameters of the equation - you'll use MCMC to discover these.
 
 ![This is an image of a scatter plot with a linear trend](images/linear_ex.PNG)
@@ -97,7 +98,7 @@ The p(⋅) ratio is the density values for the next state and current state, obt
 
 The transition probability is equal to the Hastings ratio, or min(1, HR), which would be 1 in this case.
 
-![This is an image of an example of the Hastings Ratio](images/HR.PNG)
+![This is an image of an example of the Hastings Ratio](images/HR.png)
 
 **7. Then generate a randomly generated number *u* from Uniform(0,1). If u < min(1, A.P.) then proceed with proposed parameters (also called allowing a "jump" or "advancing the chain"). If not, then stay on the current state parameters**
 
@@ -114,23 +115,19 @@ The number of iterations is equivalent to the length of the MCMC chain. How many
 **9. Diagnose efficiency and convergence**
 
 There are plots you can use to review the sampler's performance and convergence. Below is an explanation of each one with a visual example of what the ideal state might look like.
-- Histogram of samples
-In an optimally performing MCMC, the histogram of samples should converge to the posterior distribution. 
+- **Histogram of samples**: In an optimally performing MCMC, the histogram of samples should converge to the posterior distribution. 
 
 ![This is an image of an ideal Sample Histogram plot](images/ideal_sample_hist.PNG)
 
-- Trace Plot (Sample vs Iteration)
-The trace of the chain should sample around the maximum of the posterior such that the samples are close to i.i.d (independent, identical distribution)
+- **Trace Plot (Sample vs Iteration)**: The trace of the chain should sample around the maximum of the posterior such that the samples are close to i.i.d (independent, identical distribution)
 
 ![This is an image of an ideal Trace plot](images/ideal_trace_plot.PNG)
 
-- log-Posterior vs Iteration
-The log-posterior chain should be smoothly varying around the maximum
+- **log-Posterior vs Iteration**: The log-posterior chain should be smoothly varying around the maximum
 
 ![This is an image of an ideal log-Posterior vs Iteration plot](images/ideal_posterior_plot.PNG)
 
-- Acceptance Probability vs Iteration
-A good acceptance rate depends on the problem but typically for 1D problems it should be around 44%, and around 23% for more than 5 parameters.
+- **Acceptance Probability vs Iteration**: A good acceptance rate depends on the problem but typically for 1D problems it should be around 44%, and around 23% for more than 5 parameters.
 
 ![This is an image of an ideal AP vs Iteration plot](images/ideal_AP_plot.PNG)
 
@@ -139,14 +136,17 @@ A good acceptance rate depends on the problem but typically for 1D problems it s
 Q. The histogram of samples is very poorly reproducing the posterior; or the chain trace slowly varies around the mean or has large visual gaps; or the acceptance rate is extremely high (e.g. 99%)
 
 A:You should increase your jump proposal size.
-  
+
+
 Q. The chain trace is very choppy; or the acceptance rate is extremely low (e.g. 0.3%)
 
 A: The algorithm was inefficient as spent a lot of time at fixed locations in parameter space and rarely moved. You should decrease your jump proposal size.
-  
+
+
 Q. For higher parameter spaces, some of the parameters fit the posterior distribution well and others do not.
 
 A:Try different jump sizes for different parameters. Trialing different jump proposals for each parameters in high parameter spaces or complicated posterior distributions can be difficult and tedious work. Look into automating this tuning process via adaptive jump proposals.
+
 
 ## Resources:
 
