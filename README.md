@@ -44,13 +44,11 @@ Graph your data and formulate an f(x) density function equation that fits the sh
 
 **2. Choose Proposal Distribution (also called Jumping Proposal)**
 
-The Proposal Distribution is needed in order to move around parameter space. This distribution is used to suggest candidate parameters for the next state, given the current state parameters:
+The Proposal Distribution is needed in order to move around the parameter space (e.g. mu, sigma, etc). This distribution is used to suggest candidate parameters for the next state, given the current state parameters:
 x* ~ g(x* | xi),
 where xi is the current state of distro parameters and x* is the next state of distro parameters
 
-For each iteration of the algorithm, we draw proposed parameters x*.
-
-This is ultimately helping us determine the target posterior distribution parameters (e.g. the histogram of the MCMC samples produces the target posterior distribution)
+For each iteration of the algorithm, we draw proposed parameters x*. This is ultimately helping us determine the target posterior distribution parameters (e.g. the histogram of the MCMC samples produces the target posterior distribution). If you have no specific distribution in mind, choose a simple one like Normal distribution with fixed s.d. -> N(xi, sd=1). The s.d. value in this case will influence the size of the jump and is something you may need to tune to be larger or smaller (see Step #9).
 
 ***Ideal Proposal Distribution:***
 
@@ -89,16 +87,12 @@ and similarly in simpler terminology
 where p(⋅) and g(⋅) are probability density values. p(⋅) stands for the posterior distribution, while g(⋅) stands for the proposal distribution.
 When the proposal distibution is symmetric (e.g. Normal distribution) it follows the property of g(xi|x*) = g(x*|xi), and thus the g(⋅) ratio solves to 1. Note that assymmetric distributions like the Beta distribution do not follow this property.
 
-The p(⋅) ratio is the density values for the next state and current state, obtained via the posterior density function. The value of the predictive density at an observed point is the out-of-sample likelihood of a single datapoint. When we get the out-of-sample likelihoods for the next state and the current state, we can then compare the states via a ratio to determine whether either lies in a higher density area of the parameter space, or lower density area. Remember, the MCMC approach wants to spend more time in an area proportional to its height or density.
+The p(⋅) ratio is the density values for the next state and current state, obtained through the posterior density function and the observed data. The value of the predictive density at an observed point is the out-of-sample likelihood of a single datapoint. The likelihood over an entire dataset is the product of all the densities
+![This is an image of the likelihood formula](images/likelihood.PNG)
+. (Note - when finding total log likelihood, the densities are summed instead due to the properties of log). When we get the likelihoods for the next state and the current state, we can then compare those parameter values via a ratio to determine whether either lies in a higher density area of the parameter space, or lower density area based on the overall likelihood of the observed data to have come from the distribution under that set of parameter values. Remember, the MCMC approach wants to spend more time in an area proportional to its height or density.
 
 - the ratio of the target posteriors ensures that the chain will gradually move to high probability regions
 - the ratio of the proposal probabilities ensures that the chain is not influenced by “favored” locations in the proposal distribution function
-
-***Example Calculation:***
-
-The transition probability is equal to the Hastings ratio, or min(1, HR), which would be 1 in this case.
-
-![This is an image of an example of the Hastings Ratio](images/HR.png)
 
 **7. Then generate a randomly generated number *u* from Uniform(0,1). If u < min(1, A.P.) then proceed with proposed parameters (also called allowing a "jump" or "advancing the chain"). If not, then stay on the current state parameters**
 
@@ -111,6 +105,8 @@ log(_u_) <= log( p(new) ) - log( p(old) ) + log( g(old) ) - log( g(new) )
 **8. Repeat many times**
 
 The number of iterations is equivalent to the length of the MCMC chain. How many samples are required to reach convergence and to have sufficient precision depends on the complexity of data and model, and may range from as few as 100 to several million. I've seen recommendations to begin with 2,000 - 10,000 iterations.
+
+The inital iterations in the MCMC algorithm are considered "burn in", meaning the period of time to before the system satisfactorily settles into its stationary distribution and is suitable for use. Usually these values are dropped from final parameter value consideration. A general recommendation would be to drop the initial 25% of the iteration values.
 
 **9. Diagnose efficiency and convergence**
 
@@ -148,6 +144,7 @@ There are plots you can use to review the sampler's performance and convergence.
 - https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm#cite_ref-9
 - https://www.statsref.com/HTML/monte_carlo_markov_chains.html
 - https://jellis18.github.io/post/2018-01-02-mcmc-part1/ (python)
+- https://github.com/Joseph94m/MCMC/blob/master/MCMC.ipynb (python)
 - https://youtu.be/XRfmdP5Gavs
 - https://youtu.be/yCv2N7wGDCw
 - http://modernstatisticalworkflow.blogspot.com/2017/05/model-checking-with-log-posterior.html
