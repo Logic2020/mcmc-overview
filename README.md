@@ -48,7 +48,7 @@ The Proposal Distribution is needed in order to move around the parameter space 
 x* ~ g(x* | xi),
 where xi is the current state of distro parameters and x* is the next state of distro parameters
 
-For each iteration of the algorithm, we draw proposed parameters x*. This is ultimately helping us determine the target posterior distribution parameters (e.g. the histogram of the MCMC samples produces the target posterior distribution). If you have no specific distribution in mind, choose a simple one like Normal distribution with fixed s.d. -> N(xi, sd=1). The s.d. value in this case will influence the size of the jump and is something you may need to tune to be larger or smaller (see Step #9).
+For each iteration of the algorithm, we draw proposed parameters x*. This is ultimately helping us determine the target posterior distribution parameters (e.g. the histogram of the MCMC samples produces the target posterior distribution). If you have no specific distribution in mind, choose a simple one like Normal distribution with fixed s.d.: N(xi, sd=1). The s.d. value in this case will influence the size of the jump and is something you may need to tune to be larger or smaller (see Step #9).
 
 ***Ideal Proposal Distribution:***
 
