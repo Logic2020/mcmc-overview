@@ -89,7 +89,9 @@ When the proposal distibution is symmetric (e.g. Normal distribution) it follows
 
 The p(⋅) ratio is the density values for the next state and current state, obtained through the posterior density function and the observed data. The value of the predictive density at an observed point is the out-of-sample likelihood of a single datapoint. The likelihood over an entire dataset is the product of all the densities
 ![This is an image of the likelihood formula](images/likelihood.PNG)
-. (Note - when finding total log likelihood, the densities are summed instead due to the properties of log). When we get the likelihoods for the next state and the current state, we can then compare those parameter values via a ratio to determine whether either lies in a higher density area of the parameter space, or lower density area based on the overall likelihood of the observed data to have come from the distribution under that set of parameter values. Remember, the MCMC approach wants to spend more time in an area proportional to its height or density.
+. (Note, when finding total log likelihood, the densities are summed instead due to the properties of log).
+
+When we get the likelihoods for the next state and the current state, we can then compare those parameter values via a ratio (e.g. likelihood ratio test) to determine whether either lies in a higher density area of the parameter space, or lower density area based on the overall likelihood of the observed data to have come from the distribution under that set of parameter values. Remember, the MCMC approach wants to spend more time in an area proportional to its height or density.
 
 - the ratio of the target posteriors ensures that the chain will gradually move to high probability regions
 - the ratio of the proposal probabilities ensures that the chain is not influenced by “favored” locations in the proposal distribution function
