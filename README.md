@@ -89,7 +89,7 @@ and similarly in simpler terminology
 where p(⋅) and g(⋅) are probability density values. p(⋅) stands for the posterior distribution, while g(⋅) stands for the proposal distribution.
 When the proposal distibution is symmetric (e.g. Normal distribution) it follows the property of g(xi|x*) = g(x*|xi), and thus the g(⋅) ratio solves to 1. Note that assymmetric distributions like the Beta distribution do not follow this property.
 
-The p(⋅) ratio is the density values for the next state and current state, obtained via the posterior density function.
+The p(⋅) ratio is the density values for the next state and current state, obtained via the posterior density function. The value of the predictive density at an observed point is the out-of-sample likelihood of a single datapoint. When we get the out-of-sample likelihoods for the next state and the current state, we can then compare the states via a ratio to determine whether either lies in a higher density area of the parameter space, or lower density area. Remember, the MCMC approach wants to spend more time in an area proportional to its height or density.
 
 - the ratio of the target posteriors ensures that the chain will gradually move to high probability regions
 - the ratio of the proposal probabilities ensures that the chain is not influenced by “favored” locations in the proposal distribution function
