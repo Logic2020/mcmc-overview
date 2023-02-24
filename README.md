@@ -17,9 +17,13 @@ MCMC algorithms "wander around" a lumpy surface (e.g. a probability density func
 ![This is an image of a person "wandering around" a lumpy surface (e.g. a probability density function)](images/mcmc_graphic.jpg)
 
 ## Use Cases of MCMC:
+- **Calculating numerical approximations of multi-dimensional integrals**
 - **Parameter Estimation** of a probability distribution or equation (e.g. estimating mu and sigma of a Normal distribution, or slope and intercept of a line)
 - **Bayesian applications** where the posterior distribution is proportional to the prior times the likelihood, but the constant of proportionality is often unknown but needed for normalizing and ensuring the posterior integrates to 1. The MCMC approach is particularly useful for sampling from posterior distributions to perform analytically-intractible Bayesian calculations. 
+- **Hierarchical modeling** which requires integrations over hundreds to thousands of unknown parameters
 - **Sensitivity Analysis** 
+- **Rare Event Sampling** to generate samples that gradually populate the rare failure region
+- **Non-linear least squares problems** such as estimating the parameters of a non-linear equation that fits the shape of observational data
 
 
 ## Metropolis Hastings Sampling Algorithm Steps:
@@ -36,9 +40,8 @@ This specific sampling algorithm is appropriate for symmetric and non-symmetric 
 ### _Initialization_ ###
 **1. Choose Posterior Density Function**
 
-Graph your data and formulate an f(x) density function equation that fits the shape of the data (! finding the right equation is important to using it later to make accurate predictions). You will not know the specific parameters of the equation - you'll use MCMC to discover these.
+Graph the probability distribution of your data and formulate an f(x) density function equation that fits the distribution shape. Histogram plots provide a fast and reliable way to visualize the probability density of a data sample. You will not know the specific parameters of the equation - you'll use MCMC to discover these.
 
-![This is an image of a scatter plot with a linear trend](images/linear_ex.PNG)
 ![This is an image of a distribution plot with a bimodal bell curve shape](images/multimodal_ex.PNG)
 
 
@@ -139,6 +142,10 @@ There are plots you can use to review the sampler's performance and convergence.
 
 3. For higher parameter spaces, some of the parameters fit the posterior distribution well and others do not.
 - Try different jump sizes for different parameters. Trialing different jump proposals for each parameters in high parameter spaces or complicated posterior distributions can be difficult and tedious work. Look into automating this tuning process via adaptive jump proposals.
+
+**10. Final Results**
+
+After confirming your sampler performance and removing the burn-in iterations, you will have a table with probable values for the parameters of your posterior density function. Plot the values to give the probability distribution of the parameter value(s) and take the average to get a single value for the parameter(s). Input the estimated parameter(s) into the Posterior Density Function. From here, you will be able to answer questions about the likelihood of a given observation or whether an observation should be considered an outlier or anomaly, and to generate a random sample that follows the same probability distribution as your observational data. 
 
 
 ## Resources:
