@@ -163,3 +163,4 @@ After confirming your sampler performance and removing the burn-in iterations, y
 - https://twiecki.io/blog/2015/11/10/mcmc-sampling/ (python)
 - https://bayesball.github.io/BOOK/simulation-by-markov-chain-monte-carlo.html (R)
 - https://umbertopicchini.wordpress.com/2017/12/18/tips-for-coding-a-metropolis-hastings-sampler/ (R)
+- https://m-clark.github.io/docs/ld_mcmc/index_onepage.html
